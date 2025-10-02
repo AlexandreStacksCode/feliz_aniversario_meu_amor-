@@ -1,173 +1,229 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Feliz Aniversárioooo</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz Aniversário, Amor!</title>
+<style>
+  * {margin:0; padding:0; box-sizing:border-box;}
+  body {
+    font-family:'Arial', sans-serif;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:20px;
+    background: linear-gradient(135deg,#ff4b5c,#1a1a1a);
+    color:#fff;
+    overflow-x:hidden;
+    position:relative;
+  }
 
-    .body {
-      background-color: #000;
-      font-family: Arial, sans-serif;
-      color: #fff;
-      text-align: center;
-      padding: 15px 10px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      gap: 40px;
-    }
+  /* Texto principal */
+  h1.texto {
+    font-size:2.2em;
+    text-align:center;
+    text-shadow:2px 2px 8px rgba(0,0,0,0.6);
+    animation: fadeIn 2s ease-in-out;
+  }
 
-    /* Spotify */
-    .spotify-player {
-      width: 90%;
-      max-width: 450px;
-      height: 152px;
-      border-radius: 12px;
-      border: none;
-    }
+  /* Spotify */
+  .spotify-player {
+    width:90%;
+    max-width:450px;
+    height:152px;
+    border-radius:16px;
+    border:none;
+    box-shadow:0 0 20px rgba(255,75,92,0.5);
+    margin:20px 0;
+    opacity:0;
+    animation: fadeIn 2s ease-in-out 0.5s forwards;
+  }
 
-    /* Conteúdo principal (slideshow + contador + texto futuro) */
-    .main-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 40px;
-      width: 90%;
-      max-width: 400px;
-    }
+  /* Área central */
+  .main-content {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:30px;
+    width:90%;
+    max-width:500px;
+    animation: fadeIn 2s ease-in-out 1s forwards;
+    opacity:0;
+  }
 
-    /* Slideshow */
-    .slideshow {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 3 / 4;
-      overflow: hidden;
-      border-radius: 16px;
-      background-color: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  /* Slideshow */
+  .slideshow {
+    position:relative;
+    width:100%;
+    aspect-ratio:3/4;
+    overflow:hidden;
+    border-radius:20px;
+    box-shadow:0 0 25px rgba(255,75,92,0.5);
+  }
+  .slide {
+    position:absolute;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:0;
+    transition: opacity 1.5s ease-in-out, transform 3s ease;
+    transform: scale(1);
+  }
+  .slide.active {
+    opacity:1;
+    transform: scale(1.05);
+    z-index:1;
+  }
 
-    .slide {
-      position: absolute;
-      max-width: 100%;
-      max-height: 100%;
-      width: auto;
-      height: auto;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-      object-fit: contain;
-    }
+  /* Contador */
+  .contador-box {
+    background:rgba(26,26,26,0.9);
+    border:2px solid #ff4b5c;
+    padding:20px;
+    border-radius:16px;
+    box-shadow:0 0 25px rgba(255,75,92,0.5);
+    text-align:center;
+  }
+  .contador-titulo {
+    color:#ff4b5c;
+    font-size:1.3em;
+    margin-bottom:10px;
+    font-weight:bold;
+  }
+  .contador-valor {
+    font-size:1em;
+    font-weight:bold;
+  }
 
-    .slide.active {
-      opacity: 1;
-      z-index: 1;
-    }
+  /* Texto futuro */
+  .texto-futuro {
+    background:rgba(0,0,0,0.6);
+    border-radius:20px;
+    padding:25px;
+    font-style:italic;
+    font-size:1.05em;
+    max-width:85%;
+    text-align:center;
+    line-height:1.7;
+    box-shadow:0 0 20px rgba(255,255,255,0.2);
+    min-height:250px;
+    overflow:hidden;
+    position:relative;
+  }
 
-    /* Contador */
-    .contador-box {
-      background-color: #1a1a1a;
-      color: white;
-      padding: 16px 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px #ff4b5c;
-      width: 100%;
-    }
+  /* Corações */
+  .coracao {
+    position:absolute;
+    width:20px;
+    height:20px;
+    background:#ff4b5c;
+    transform:rotate(45deg);
+    animation: float linear infinite;
+    z-index:0;
+  }
+  .coracao:before, .coracao:after {
+    content:'';
+    position:absolute;
+    width:20px;
+    height:20px;
+    background:#ff4b5c;
+    border-radius:50%;
+  }
+  .coracao:before { top:-10px; left:0; }
+  .coracao:after { left:10px; top:0; }
 
-    .contador-titulo {
-      color: #ff4b5c;
-      font-size: 1.2em;
-      margin-bottom: 8px;
-    }
+  /* Fade-in animation */
+  @keyframes fadeIn { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
 
-    .contador-valor {
-      font-size: 1em;
-      font-weight: bold;
-    }
+  /* Float corações */
+  @keyframes float {
+    0% { transform: translateY(0) rotate(45deg); opacity:1;}
+    100% { transform: translateY(-900px) rotate(45deg); opacity:0;}
+  }
 
-    /* Texto futuro sem caixa */
-    .texto-futuro {
-      width: 100%;
-      color: #aaa;
-      font-style: italic;
-      font-size: 1em;
-      margin-top: 0;
-      padding: 0;
-      user-select: none;
-      text-align: center;
-      max-width: 60%;
-    }
-
-    .texto {
-      color: #ff4b5c;
-      font-size: 1.5em;
-    }
-
-    /* Ajustes para telas menores */
-    @media (max-width: 400px) {
-      .spotify-player {
-        height: 140px;
-      }
-      .contador-box {
-        padding: 14px 16px;
-      }
-      .contador-titulo {
-        font-size: 1em;
-      }
-    }
-  </style>
+  /* Responsividade */
+  @media(max-width:450px){
+    h1.texto{font-size:1.8em;}
+    .spotify-player{height:140px;}
+    .texto-futuro{font-size:0.95em; padding:20px; min-height:180px;}
+    .coracao, .coracao:before, .coracao:after{width:15px;height:15px;}
+  }
+</style>
 </head>
-<body class="body">
-  <h1 class="texto">Feliz aniversário minha gatinha! 🎉🥳</h1>
+<body>
 
-  <!-- Player Spotify -->
-  <iframe class="spotify-player"
-    style="border-radius:12px"
-    src="https://open.spotify.com/playlist/2jD37wWmb6UfDkLHc0ZBUy?si=b050a7bfb3ac4e55"
-    frameborder="0"
-    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-    loading="lazy"
-    allowfullscreen>
-  </iframe>
+<!-- Corações flutuantes -->
+<div id="coracoes"></div>
 
-  <!-- Área central com imagem e contador -->
-  <div class="main-content">
-    <div class="slideshow">
-      <!-- Coloque os nomes corretos dos arquivos de imagem na mesma pasta -->
-      <img src="1.jpg.jpg" class="slide active" alt="">
-      <img src="2.jpg.jpg" class="slide" alt="">
-      <img src="3.jpg.jpg" class="slide" alt="">
-      <img src="4.jpg.jpg" class="slide" alt="">
-      <img src="5.jpg.jpg" class="slide" alt="">
-      <img src="6.jpg.jpg" class="slide" alt="">
-      <img src="7.jpg.jpg" class="slide" alt="">
-      <img src="8.jpg.jpg" class="slide" alt="">
-      <img src="9.jpg.jpg" class="slide" alt="">
-      <img src="10.jpg.jpg" class="slide" alt="">
-      <img src="11.jpg.jpg" class="slide" alt="">
-      <img src="12.jpg.jpg" class="slide" alt="">
-      <img src="13.jpg.jpg" class="slide" alt="">
-      <img src="14.jpg.jpg" class="slide" alt="">
-    </div>
+<h1 class="texto">Feliz aniversário minha gatinha! 🎉🥳</h1>
 
-    <!-- Contador de tempo -->
-    <div class="contador-box">
-      <div class="contador-titulo">Te amo mais do que tudo há:</div>
-      <div id="contador" class="contador-valor"></div>
-    </div>
+<!-- Spotify -->
+<iframe class="spotify-player"
+src="https://open.spotify.com/embed/playlist/2jD37wWmb6UfDkLHc0ZBUy"
+frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowfullscreen>
+</iframe>
+
+<!-- Conteúdo central -->
+<div class="main-content">
+  <div class="slideshow">
+    <img src="1.jpg.jpg" class="slide active" alt="">
+    <img src="2.jpg.jpg" class="slide" alt="">
+    <img src="3.jpg.jpg" class="slide" alt="">
+    <img src="4.jpg.jpg" class="slide" alt="">
+    <img src="5.jpg.jpg" class="slide" alt="">
+    <img src="6.jpg.jpg" class="slide" alt="">
+    <img src="7.jpg.jpg" class="slide" alt="">
+    <img src="8.jpg.jpg" class="slide" alt="">
   </div>
 
-  <div class="texto-futuro">
-    Hoje é o seu dia, e eu quero celebrar não só os seus 18 anos, mas cada momento que tive a sorte de viver ao seu lado. Dois anos de risadas, descobertas e muuuitas aventuras…
+  <div class="contador-box">
+    <div class="contador-titulo">Te amo mais do que tudo há:</div>
+    <div id="contador" class="contador-valor"></div>
+  </div>
+</div>
+
+<div class="texto-futuro" id="texto-futuro"></div>
+
+<script>
+  // Slideshow com zoom suave
+  let slideIndex = 0;
+  const slides = document.querySelectorAll(".slide");
+  function showSlides(){
+    if(!slides||slides.length===0) return;
+    slides.forEach(s=>{s.classList.remove("active"); s.style.transform="scale(1)";});
+    slideIndex=(slideIndex+1)%slides.length;
+    slides[slideIndex].classList.add("active");
+    slides[slideIndex].style.transform="scale(1.05)";
+    setTimeout(showSlides,3500);
+  }
+  if(slides.length>0){
+    if(![...slides].some(s=>s.classList.contains("active"))) slides[0].classList.add("active");
+    showSlides();
+  }
+
+  // Contador
+  const inicioRelacionamento=new Date("2023-09-19T00:00:00");
+  function atualizarContador(){
+    const agora=new Date();
+    let anos=agora.getFullYear()-inicioRelacionamento.getFullYear();
+    let meses=agora.getMonth()-inicioRelacionamento.getMonth();
+    let dias=agora.getDate()-inicioRelacionamento.getDate();
+    let horas=agora.getHours()-inicioRelacionamento.getHours();
+    let minutos=agora.getMinutes()-inicioRelacionamento.getMinutes();
+    let segundos=agora.getSeconds()-inicioRelacionamento.getSeconds();
+    if(segundos<0){segundos+=60;minutos--;}
+    if(minutos<0){minutos+=60;horas--;}
+    if(horas<0){horas+=24;dias--;}
+    if(dias<0){dias+=new Date(agora.getFullYear(),agora.getMonth(),0).getDate(); meses--;}
+    if(meses<0){meses+=12;anos--;}
+    document.getElementById("contador").textContent=`${anos} anos, ${meses} meses, ${dias} dias, ${minutos} minutos e ${segundos} segundos`;
+  }
+  atualizarContador();
+  setInterval(atualizarContador,1000);
+
+  // Texto digitação
+  const textoCompleto=`Hoje é o seu dia, e eu quero celebrar não só os seus 18 anos, mas cada momento que tive a sorte de viver ao seu lado. Dois anos de risadas, descobertas e muuuitas aventuras…
 
 Parece que foi ontem que estávamos indo para a Serra do Rio do Rastro, depois seguimos para Ametista do Sul, e até para o Paraguai, sempre juntinhos. E hoje, com orgulho te vejo completando 18 anos, entrando em um novo ciclo da vida, cheio de sonhos, oportunidades e caminhos para colorirmos juntos.
 
@@ -178,78 +234,30 @@ Amor, É desse jeito que você é pra mim. A nossa história está apenas começ
 
 Te amo mais do que palavras podem expressar, e prometo fazer cada dia ao seu lado especial. 💖
 
-    TE AMO!💖
+TE AMO!💖`;
 
-  </div>
-
-  <script>
-    // SLIDESHOW
-    let slideIndex = 0;
-    const slides = document.querySelectorAll(".slide");
-
-    function showSlides() {
-      if (!slides || slides.length === 0) return;
-      slides.forEach(slide => slide.classList.remove("active"));
-
-      slideIndex = (slideIndex + 1) % slides.length;
-      slides[slideIndex].classList.add("active");
-
-      setTimeout(showSlides, 3000);
+  const textoElemento=document.getElementById("texto-futuro");
+  let i=0;
+  function digitarTexto(){
+    if(i<textoCompleto.length){
+      textoElemento.textContent+=textoCompleto.charAt(i);
+      i++;
+      setTimeout(digitarTexto,20);
     }
+  }
+  digitarTexto();
 
-    // inicia slideshow apenas se houver slides
-    if (slides.length > 0) {
-      // garante que exista uma active inicial
-      if (![...slides].some(s => s.classList.contains('active'))) {
-        slides[0].classList.add('active');
-      }
-      showSlides();
-    }
+  // Corações flutuantes
+  function criarCoracoes(){
+    const coracao=document.createElement("div");
+    coracao.classList.add("coracao");
+    coracao.style.left=Math.random()*window.innerWidth+"px";
+    coracao.style.animationDuration=(4+Math.random()*6)+"s";
+    document.body.appendChild(coracao);
+    setTimeout(()=>coracao.remove(),10000);
+  }
+  setInterval(criarCoracoes,400);
+</script>
 
-    // CONTADOR
-    const inicioRelacionamento = new Date("2023-09-19T00:00:00");
-
-    function atualizarContador() {
-      const agora = new Date();
-      let anos = agora.getFullYear() - inicioRelacionamento.getFullYear();
-      let meses = agora.getMonth() - inicioRelacionamento.getMonth();
-      let dias = agora.getDate() - inicioRelacionamento.getDate();
-      let horas = agora.getHours() - inicioRelacionamento.getHours();
-      let minutos = agora.getMinutes() - inicioRelacionamento.getMinutes();
-      let segundos = agora.getSeconds() - inicioRelacionamento.getSeconds();
-
-      if (segundos < 0) {
-        segundos += 60;
-        minutos--;
-      }
-      if (minutos < 0) {
-        minutos += 60;
-        horas--;
-      }
-      if (horas < 0) {
-        horas += 24;
-        dias--;
-      }
-      if (dias < 0) {
-        // último dia do mês anterior ao mês atual
-        const ultimoDiaMesAnterior = new Date(agora.getFullYear(), agora.getMonth(), 0).getDate();
-        dias += ultimoDiaMesAnterior;
-        meses--;
-      }
-      if (meses < 0) {
-        meses += 12;
-        anos--;
-      }
-
-      const contadorEl = document.getElementById("contador");
-      if (contadorEl) {
-        contadorEl.textContent = `${anos} anos, ${meses} meses, ${dias} dias, ${minutos} minutos e ${segundos} segundos`;
-      }
-    }
-
-    atualizarContador();
-    setInterval(atualizarContador, 1000);
-  </script>
 </body>
 </html>
-

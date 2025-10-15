@@ -3,260 +3,307 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Feliz Aniversário, Amor!</title>
+<title>Feliz Aniversário, Meu Amor!</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 <style>
-  * {margin:0; padding:0; box-sizing:border-box;}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
   body {
-    font-family:'Arial', sans-serif;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    padding:20px;
-    background: linear-gradient(135deg,#ff4b5c,#1a1a1a);
-    color:#fff;
-    overflow-x:hidden;
-    position:relative;
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    color: #fff;
+    overflow-x: hidden;
+    position: relative;
+    /* 1. MÁGICA: Fundo com gradiente animado */
+    background: linear-gradient(135deg, #ff758c, #1a1a1a, #ff4b5c, #000);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
   }
 
-  /* Texto principal */
+  /* TELA DE ABERTURA */
+  #overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    transition: opacity 1s ease, visibility 1s ease;
+  }
+  #overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+  #start-button {
+    font-family: 'Poppins', sans-serif;
+    background: #ff4b5c;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(255, 75, 92, 0.7);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  #start-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 35px rgba(255, 75, 92, 1);
+  }
+  .overlay-text {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3em;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  /* Conteúdo principal */
+  #main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    max-width: 600px;
+    opacity: 0; /* Começa invisível para a transição principal funcionar */
+  }
+  #main-container.visible {
+      opacity: 1;
+      transition: opacity 1s ease-in-out;
+  }
+
+  /* 2. MÁGICA: Animações de entrada escalonadas */
+  .fade-in-up {
+      opacity: 0; /* Começa invisível */
+      animation: fadeInUp 1.2s ease-out forwards;
+  }
+  h1.texto { animation-delay: 0.5s; }
+  .spotify-player { animation-delay: 0.8s; }
+  .main-content { animation-delay: 1.1s; }
+  .texto-futuro { animation-delay: 1.4s; }
+
+
   h1.texto {
-    font-size:2.2em;
-    text-align:center;
-    text-shadow:2px 2px 8px rgba(0,0,0,0.6);
-    animation: fadeIn 2s ease-in-out;
+    font-family: 'Great Vibes', cursive;
+    font-size: 4em;
+    text-align: center;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
   }
 
-  /* Spotify */
   .spotify-player {
-    width:90%;
-    max-width:450px;
-    height:152px;
-    border-radius:16px;
-    border:none;
-    box-shadow:0 0 20px rgba(255,75,92,0.5);
-    margin:20px 0;
-    opacity:0;
-    animation: fadeIn 2s ease-in-out 0.5s forwards;
+    width: 90%;
+    max-width: 450px;
+    height: 152px;
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 0 20px rgba(255, 75, 92, 0.5);
   }
 
-  /* Área central */
   .main-content {
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:30px;
-    width:90%;
-    max-width:500px;
-    animation: fadeIn 2s ease-in-out 1s forwards;
-    opacity:0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    max-width: 500px;
   }
 
-  /* Slideshow */
   .slideshow {
-    position:relative;
-    width:100%;
-    aspect-ratio:3/4;
-    overflow:hidden;
-    border-radius:20px;
-    box-shadow:0 0 25px rgba(255,75,92,0.5);
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(255, 75, 92, 0.5);
   }
   .slide {
-    position:absolute;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    opacity:0;
-    transition: opacity 1.5s ease-in-out, transform 3s ease;
-    transform: scale(1);
+    position: absolute; width: 100%; height: 100%; object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+    transform: scale(1.05); /* Começa com zoom */
   }
   .slide.active {
-    opacity:1;
-    transform: scale(1.05);
-    z-index:1;
+    opacity: 1;
+    transform: scale(1); /* Volta ao normal */
+    z-index: 1;
+  }
+  
+  /* 3. MÁGICA: Cards interativos */
+  .content-box {
+    background: rgba(26, 26, 26, 0.9);
+    border: 1px solid rgba(255, 75, 92, 0.5);
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 0 25px rgba(255, 75, 92, 0.5);
+    text-align: center;
+    width: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .content-box:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 35px rgba(255, 75, 92, 0.7);
   }
 
-  /* Contador */
-  .contador-box {
-    background:rgba(26,26,26,0.9);
-    border:2px solid #ff4b5c;
-    padding:20px;
-    border-radius:16px;
-    box-shadow:0 0 25px rgba(255,75,92,0.5);
-    text-align:center;
-  }
   .contador-titulo {
-    color:#ff4b5c;
-    font-size:1.3em;
-    margin-bottom:10px;
-    font-weight:bold;
+    color: #ff4b5c; font-size: 1.2em; margin-bottom: 10px; font-weight: bold;
   }
   .contador-valor {
-    font-size:1em;
-    font-weight:bold;
+    font-size: 1em; font-weight: 300;
   }
-
-  /* Texto futuro */
   .texto-futuro {
-    background:rgba(0,0,0,0.6);
-    border-radius:20px;
-    padding:25px;
-    font-style:italic;
-    font-size:1.05em;
-    max-width:85%;
-    text-align:center;
-    line-height:1.7;
-    box-shadow:0 0 20px rgba(255,255,255,0.2);
-    min-height:250px;
-    overflow:hidden;
-    position:relative;
+    line-height: 1.8;
+    text-align: justify; /* Melhor para leitura */
   }
-
-  /* Corações */
+  /* 4. MÁGICA: Mensagem final com destaque */
+  .final-message {
+    display: block;
+    text-align: center;
+    margin-top: 25px;
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.8em;
+    color: #ff758c;
+    text-shadow: 0 0 15px #ff758c;
+    animation: pulse 2s infinite;
+  }
+  
+  /* 5. MÁGICA: Corações flutuantes melhorados */
   .coracao {
-    position:absolute;
-    width:20px;
-    height:20px;
-    background:#ff4b5c;
-    transform:rotate(45deg);
-    animation: float linear infinite;
-    z-index:0;
+    position: absolute;
+    width: 20px; height: 20px;
+    background: #ff4b5c;
+    z-index: -1;
+    animation: float 10s linear infinite;
   }
   .coracao:before, .coracao:after {
-    content:'';
-    position:absolute;
-    width:20px;
-    height:20px;
-    background:#ff4b5c;
-    border-radius:50%;
+    content: ''; position: absolute; width: 20px; height: 20px;
+    background: #ff4b5c; border-radius: 50%;
   }
-  .coracao:before { top:-10px; left:0; }
-  .coracao:after { left:10px; top:0; }
+  .coracao:before { top: -10px; left: 0; }
+  .coracao:after { top: 0; left: -10px; } /* Corrigido para forma perfeita */
 
-  /* Fade-in animation */
-  @keyframes fadeIn { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
-
-  /* Float corações */
+  /* ANIMAÇÕES DA MÁGICA */
+  @keyframes gradientAnimation {
+    0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); }
+  }
   @keyframes float {
-    0% { transform: translateY(0) rotate(45deg); opacity:1;}
-    100% { transform: translateY(-900px) rotate(45deg); opacity:0;}
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); text-shadow: 0 0 15px #ff758c; }
+    50% { transform: scale(1.05); text-shadow: 0 0 25px #ff758c; }
+    100% { transform: scale(1); text-shadow: 0 0 15px #ff758c; }
   }
 
   /* Responsividade */
+  @media(max-width: 600px) {
+    h1.texto { font-size: 3em; } .overlay-text { font-size: 2.5em; }
+    .texto-futuro { font-size: 0.95em; line-height: 1.7; text-align: left; }
+    .final-message { font-size: 2.2em; }
+  }
   @media(max-width:450px){
-    h1.texto{font-size:1.8em;}
     .spotify-player{height:140px;}
-    .texto-futuro{font-size:0.95em; padding:20px; min-height:180px;}
-    .coracao, .coracao:before, .coracao:after{width:15px;height:15px;}
   }
 </style>
 </head>
 <body>
 
-<!-- Corações flutuantes -->
-<div id="coracoes"></div>
-
-<h1 class="texto">Feliz aniversário minha gatinha! 🎉🥳</h1>
-
-<!-- Spotify -->
-<iframe class="spotify-player"
-src="https://open.spotify.com/embed/playlist/2jD37wWmb6UfDkLHc0ZBUy"
-frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowfullscreen>
-</iframe>
-
-<!-- Conteúdo central -->
-<div class="main-content">
-  <div class="slideshow">
-    <img src="1.jpg.jpg" class="slide active" alt="">
-    <img src="2.jpg.jpg" class="slide" alt="">
-    <img src="3.jpg.jpg" class="slide" alt="">
-    <img src="4.jpg.jpg" class="slide" alt="">
-    <img src="5.jpg.jpg" class="slide" alt="">
-    <img src="6.jpg.jpg" class="slide" alt="">
-    <img src="7.jpg.jpg" class="slide" alt="">
-    <img src="8.jpg.jpg" class="slide" alt="">
-  </div>
-
-  <div class="contador-box">
-    <div class="contador-titulo">Te amo mais do que tudo há:</div>
-    <div id="contador" class="contador-valor"></div>
-  </div>
+<div id="overlay">
+  <div class="overlay-text">Um presente para você...</div>
+  <button id="start-button">Clique para abrir ❤️</button>
 </div>
 
-<div class="texto-futuro" id="texto-futuro"></div>
+<div id="main-container">
+    <h1 class="texto fade-in-up">Feliz aniversário minha gatinha! 🎉🥳</h1>
+
+    <iframe class="spotify-player fade-in-up" src="https://open.spotify.com/embed/playlist/2jD37wWmb6UfDkLHc0ZBUy" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
+
+    <div class="main-content fade-in-up">
+      <div class="slideshow">
+        <img src="1.jpg.jpg" class="slide active" alt="Nossa Lembrança"> <img src="2.jpg.jpg" class="slide" alt="Nossa Lembrança">
+        <img src="3.jpg.jpg" class="slide" alt="Nossa Lembrança"> <img src="4.jpg.jpg" class="slide" alt="Nossa Lembrança">
+        <img src="5.jpg.jpg" class="slide" alt="Nossa Lembrança"> <img src="6.jpg.jpg" class="slide" alt="Nossa Lembrança">
+        <img src="7.jpg.jpg" class="slide" alt="Nossa Lembrança"> <img src="8.jpg.jpg" class="slide" alt="Nossa Lembrança">
+      </div>
+      <div class="contador-box content-box">
+        <div class="contador-titulo"><i class="fas fa-heart"></i> Te amo mais do que tudo há: <i class="fas fa-heart"></i></div>
+        <div id="contador" class="contador-valor"></div>
+      </div>
+    </div>
+
+    <div class="texto-futuro content-box fade-in-up" id="texto-futuro"></div>
+</div>
 
 <script>
-  // Slideshow com zoom suave
-  let slideIndex = 0;
-  const slides = document.querySelectorAll(".slide");
-  function showSlides(){
-    if(!slides||slides.length===0) return;
-    slides.forEach(s=>{s.classList.remove("active"); s.style.transform="scale(1)";});
-    slideIndex=(slideIndex+1)%slides.length;
-    slides[slideIndex].classList.add("active");
-    slides[slideIndex].style.transform="scale(1.05)";
-    setTimeout(showSlides,3500);
-  }
-  if(slides.length>0){
-    if(![...slides].some(s=>s.classList.contains("active"))) slides[0].classList.add("active");
-    showSlides();
-  }
+  document.getElementById('start-button').addEventListener('click', () => {
+    document.getElementById('overlay').classList.add('hidden');
+    document.getElementById('main-container').classList.add('visible');
+    startContent();
+  });
 
-  // Contador
-  const inicioRelacionamento=new Date("2023-09-19T00:00:00");
-  function atualizarContador(){
-    const agora=new Date();
-    let anos=agora.getFullYear()-inicioRelacionamento.getFullYear();
-    let meses=agora.getMonth()-inicioRelacionamento.getMonth();
-    let dias=agora.getDate()-inicioRelacionamento.getDate();
-    let horas=agora.getHours()-inicioRelacionamento.getHours();
-    let minutos=agora.getMinutes()-inicioRelacionamento.getMinutes();
-    let segundos=agora.getSeconds()-inicioRelacionamento.getSeconds();
-    if(segundos<0){segundos+=60;minutos--;}
-    if(minutos<0){minutos+=60;horas--;}
-    if(horas<0){horas+=24;dias--;}
-    if(dias<0){dias+=new Date(agora.getFullYear(),agora.getMonth(),0).getDate(); meses--;}
-    if(meses<0){meses+=12;anos--;}
-    document.getElementById("contador").textContent=`${anos} anos, ${meses} meses, ${dias} dias, ${minutos} minutos e ${segundos} segundos`;
-  }
-  atualizarContador();
-  setInterval(atualizarContador,1000);
-
-  // Texto digitação
-  const textoCompleto=`Hoje é o seu dia, e eu quero celebrar não só os seus 18 anos, mas cada momento que tive a sorte de viver ao seu lado. Dois anos de risadas, descobertas e muuuitas aventuras…
-
-Parece que foi ontem que estávamos indo para a Serra do Rio do Rastro, depois seguimos para Ametista do Sul, e até para o Paraguai, sempre juntinhos. E hoje, com orgulho te vejo completando 18 anos, entrando em um novo ciclo da vida, cheio de sonhos, oportunidades e caminhos para colorirmos juntos.
-
-Fazer 18 anos não é só sobre idade; é sobre liberdade, escolhas e começar a escrever capítulos novos e lindos da sua história. E eu quero estar em cada um desses capítulos, lado a lado CONTIGO!
-
-“Tem pessoas que a gente nunca esquece, nem se tentar… como o primeiro amor.”
-Amor, É desse jeito que você é pra mim. A nossa história está apenas começando, e eu mal posso esperar pelas viagens, pelas risadas, pelas aventurinhas e pelos momentos que nos farão crescer e pelos desafios que vamos superar juntos.
-
-Te amo mais do que palavras podem expressar, e prometo fazer cada dia ao seu lado especial. 💖
-
-TE AMO!💖`;
-
-  const textoElemento=document.getElementById("texto-futuro");
-  let i=0;
-  function digitarTexto(){
-    if(i<textoCompleto.length){
-      textoElemento.textContent+=textoCompleto.charAt(i);
-      i++;
-      setTimeout(digitarTexto,20);
+  function startContent() {
+    // SEU SCRIPT ORIGINAL DO SLIDESHOW (com pequeno ajuste no efeito)
+    let slideIndex = 0;
+    const slides = document.querySelectorAll(".slide");
+    function showSlides(){
+      if(!slides.length) return;
+      slides.forEach(s => s.classList.remove("active"));
+      slideIndex = (slideIndex + 1) % slides.length;
+      slides[slideIndex].classList.add("active");
+      setTimeout(showSlides, 4000); // Um pouco mais de tempo para apreciar a foto
     }
-  }
-  digitarTexto();
+    showSlides();
 
-  // Corações flutuantes
-  function criarCoracoes(){
-    const coracao=document.createElement("div");
-    coracao.classList.add("coracao");
-    coracao.style.left=Math.random()*window.innerWidth+"px";
-    coracao.style.animationDuration=(4+Math.random()*6)+"s";
-    document.body.appendChild(coracao);
-    setTimeout(()=>coracao.remove(),10000);
+    // SEU SCRIPT DO CONTADOR ORIGINAL
+    const inicioRelacionamento=new Date("2023-09-19T00:00:00");
+    function atualizarContador(){
+      const agora=new Date(); let anos=agora.getFullYear()-inicioRelacionamento.getFullYear(); let meses=agora.getMonth()-inicioRelacionamento.getMonth(); let dias=agora.getDate()-inicioRelacionamento.getDate(); let horas=agora.getHours()-inicioRelacionamento.getHours(); let minutos=agora.getMinutes()-inicioRelacionamento.getMinutes(); let segundos=agora.getSeconds()-inicioRelacionamento.getSeconds(); if(segundos<0){segundos+=60;minutos--;} if(minutos<0){minutos+=60;horas--;} if(horas<0){horas+=24;dias--;} if(dias<0){dias+=new Date(agora.getFullYear(),agora.getMonth(),0).getDate(); meses--;} if(meses<0){meses+=12;anos--;}
+      document.getElementById("contador").textContent=`${anos}a, ${meses}m, ${dias}d, ${horas}h, ${minutos}m e ${segundos}s`; // Formato mais curto
+    }
+    setInterval(atualizarContador,1000); atualizarContador();
+
+    // SCRIPT DO TEXTO DIGITADO COM DESTAQUE NA MENSAGEM FINAL
+    const textoPrincipal =`Hoje é o seu dia, e eu quero celebrar não só os seus 18 anos, mas cada momento que tive a sorte de viver ao seu lado. Dois anos de risadas, descobertas e muuuitas aventuras… Parece que foi ontem que estávamos indo para a Serra do Rio do Rastro, depois seguimos para Ametista do Sul, e até para o Paraguai, sempre juntinhos. E hoje, com orgulho te vejo completando 18 anos, entrando em um novo ciclo da vida, cheio de sonhos, oportunidades e caminhos para colorirmos juntos. Fazer 18 anos não é só sobre idade; é sobre liberdade, escolhas e começar a escrever capítulos novos e lindos da sua história. E eu quero estar em cada um desses capítulos, lado a lado CONTIGO! “Tem pessoas que a gente nunca esquece, nem se tentar… como o primeiro amor.” Amor, É desse jeito que você é pra mim. A nossa história está apenas começando, e eu mal posso esperar pelas viagens, pelas risadas, pelas aventurinhas e pelos momentos que nos farão crescer e pelos desafios que vamos superar juntos. Te amo mais do que palavras podem expressar, e prometo fazer cada dia ao seu lado especial. 💖`;
+    const mensagemFinal = `TE AMO!💖`;
+    const textoElemento=document.getElementById("texto-futuro"); let i=0;
+    function digitarTexto(){
+      if(i < textoPrincipal.length){
+        textoElemento.innerHTML += textoPrincipal.charAt(i).replace('\n', '<br>'); i++; setTimeout(digitarTexto,25);
+      } else {
+        textoElemento.innerHTML += `<span class="final-message">${mensagemFinal}</span>`;
+      }
+    }
+    digitarTexto();
+
+    // SCRIPT DOS CORAÇÕES FLUTUANTES MELHORADO
+    function criarCoracoes(){
+      const coracao=document.createElement("div"); coracao.classList.add("coracao");
+      coracao.style.left=Math.random()*100+"vw";
+      coracao.style.transform = `scale(${Math.random() * 0.7 + 0.5})`; // Tamanhos variados
+      coracao.style.animationDuration = (Math.random() * 7 + 8) + "s"; // Velocidades variadas
+      document.body.appendChild(coracao);
+      setTimeout(()=>coracao.remove(),15000);
+    }
+    setInterval(criarCoracoes,350);
   }
-  setInterval(criarCoracoes,400);
 </script>
 
 </body>
